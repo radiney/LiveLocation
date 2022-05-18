@@ -12,6 +12,7 @@ import CoreLocation
 class ViewController: UIViewController {
     
     @IBOutlet weak var mkMaps: MKMapView!
+    @IBOutlet weak var lblAddress: UILabel!
     
     let locationManager = CLLocationManager()
     let distanceMeters : Double = 10000

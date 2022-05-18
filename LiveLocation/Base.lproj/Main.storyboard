@@ -17,29 +17,52 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="ChX-8t-HDL">
-                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="768"/>
                             </mapView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pin" translatesAutoresizingMaskIntoConstraints="NO" id="zBn-To-fU7">
+                                <rect key="frame" x="202" y="398" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="Nve-1m-TuW"/>
+                                    <constraint firstAttribute="width" constant="40" id="gGL-1n-MrA"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U0o-NY-3eG">
+                                <rect key="frame" x="0.0" y="812" width="414" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="Zfj-by-LbB"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="ChX-8t-HDL" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="4nc-MD-hTr"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="U0o-NY-3eG" secondAttribute="trailing" id="78L-xF-KQe"/>
                             <constraint firstItem="ChX-8t-HDL" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="BLb-ns-5cT"/>
                             <constraint firstItem="ChX-8t-HDL" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Icl-IX-laH"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ChX-8t-HDL" secondAttribute="trailing" id="N0U-fN-fPt"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="ChX-8t-HDL" secondAttribute="bottom" id="UJj-bC-JeC"/>
+                            <constraint firstItem="U0o-NY-3eG" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="N4y-wp-KvC"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="U0o-NY-3eG" secondAttribute="bottom" id="Uuc-Fo-Zjl"/>
+                            <constraint firstItem="zBn-To-fU7" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="15" id="fha-nG-4J9"/>
+                            <constraint firstItem="zBn-To-fU7" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="-30" id="jFO-5A-MrU"/>
+                            <constraint firstItem="U0o-NY-3eG" firstAttribute="top" secondItem="ChX-8t-HDL" secondAttribute="bottom" id="xUp-Wg-CLt"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="lblAddress" destination="U0o-NY-3eG" id="WjN-D8-zQj"/>
                         <outlet property="mkMaps" destination="ChX-8t-HDL" id="Rcl-7I-Q7G"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="20" y="84"/>
+            <point key="canvasLocation" x="18.840579710144929" y="83.705357142857139"/>
         </scene>
     </scenes>
     <resources>
+        <image name="pin" width="341" height="341"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
