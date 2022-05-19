@@ -30,11 +30,19 @@ class ViewController: UIViewController {
             //show alert how to turn on location service in settings
         }
     }
-    
+    	
     func configLocationManager(){
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        mkMaps.delegate = self
     }
+    
+    func centeralizeMapOnUserLocation() {
+           if let currentLocation = locationManager.location?.coordinate {
+               let currentRegion = MKCoordinateRegion.init(center: currentLocation, latitudinalMeters: distanceMeters, longitudinalMeters: distanceMeters				)
+               mkMaps.setRegion(currentRegion, animated: true)
+           }
+       }
     
     func  checkLocationAutorization(){
         switch CLLocationManager.authorizationStatus(){
@@ -57,6 +65,13 @@ class ViewController: UIViewController {
             break
         }
     }
+    
+    func getCenterLocation(for mkMaps: MKMapView) -> CLLocation{
+        let latitude = mkMaps.centerCoordinate.latitude
+        let longtitude = mkMaps.centerCoordinate.longitude
+        return CLLocation(latitude: latitude, longitude: longtitude)
+    }
+    
     func centerMapOnUser(){
         if let currentLocation = locationManager.location?.coordinate {
             let currentRegion = MKCoordinateRegion(center: currentLocation, latitudinalMeters: distanceMeters, longitudinalMeters: distanceMeters)
@@ -81,3 +96,8 @@ extension ViewController: CLLocationManagerDelegate {
     }
 }
 
+extension ViewController : MKMapViewDelegate {
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        let center = getCenterLocation(for: mkMaps)
+    }
+}
