@@ -16,10 +16,12 @@ class ViewController: UIViewController {
     
     let locationManager = CLLocationManager()
     let distanceMeters : Double = 10000
+    var previousLocation : CLLocation?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         checkLocationService()
+        lblAddress.text = " "
     }
     
     func checkLocationService(){
@@ -60,13 +62,18 @@ class ViewController: UIViewController {
             //todo
             break
         case .authorizedWhenInUse:
-            mkMaps.showsUserLocation = true
-            centerMapOnUser()
-            break
+            startTractingLocation()
         }
     }
     
-    func getCenterLocation(for mkMaps: MKMapView) -> CLLocation{
+    func startTractingLocation(){
+        locationManager.startUpdatingLocation()
+        mkMaps.showsUserLocation = true
+        centerMapOnUser()
+        previousLocation = getCenterLocation(for: mkMaps)
+    }
+    
+    func configLocationManager(for mkMaps: MKMapView) -> CLLocation{
         let latitude = mkMaps.centerCoordinate.latitude
         let longtitude = mkMaps.centerCoordinate.longitude
         return CLLocation(latitude: latitude, longitude: longtitude)
@@ -79,6 +86,12 @@ class ViewController: UIViewController {
         }
     }
     
+    func getCenterLocation(for mkMaps : MKMapView) -> CLLocation {
+        let latitude = mkMaps.centerCoordinate.latitude
+        let longitude = mkMaps.centerCoordinate.longitude
+        return CLLocation(latitude: latitude, longitude: longitude)
+    }
+    
 }
 
 extension ViewController: CLLocationManagerDelegate {
@@ -87,17 +100,55 @@ extension ViewController: CLLocationManagerDelegate {
         checkLocationService()
     }
     
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let latestLocation = locations.last else {
-            return
-        }
-        let currentRegion = MKCoordinateRegion.init(center: latestLocation.coordinate, latitudinalMeters: distanceMeters, longitudinalMeters: distanceMeters)
-        mkMaps.setRegion(currentRegion, animated: true)
-    }
+//    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+//        guard let latestLocation = locations.last else {
+//            return
+//        }
+//        let currentRegion = MKCoordinateRegion.init(center: latestLocation.coordinate, latitudinalMeters: distanceMeters, longitudinalMeters: distanceMeters)
+//        mkMaps.setRegion(currentRegion, animated: true)
+//    }
+    
+    
 }
 
 extension ViewController : MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-        let center = getCenterLocation(for: mkMaps)
+        let center = configLocationManager(for: mkMaps)
+        let geoCoder = CLGeocoder()
+        
+        guard let previousLocation = previousLocation else {
+            return
+        }
+        
+        guard center.distance(from: previousLocation) > 50 else {
+            return
+        }
+        
+        self.previousLocation = center
+        
+        geoCoder.reverseGeocodeLocation(center) { [weak self] (placemark, error) in
+            guard let strongSelf = self else {
+                return
+            }
+            
+            if let _ = error {
+                //TODO: show alert to inform user about error (error handling)
+                return
+            }
+            
+            guard let placemark = placemark?.first else {
+                //TODO: show alert to inform user about error (error handling)
+                return
+            }
+            
+            let streetNumber = placemark.subThoroughfare ?? " "
+            let streetName = placemark.thoroughfare ?? " "
+        	
+            DispatchQueue.main.async {
+                strongSelf.lblAddress.text = "\(streetName), \(streetName)"
+            }
+        }
     }
 }
+
+	
